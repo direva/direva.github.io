@@ -1,0 +1,39 @@
+<html>
+  <head>
+      <title>fetch task</title>
+  </head>
+  <body>
+    <button>Поехали</button>
+    <ol id="values">
+      <li>10</li>
+      <li>20</li>
+      <li>30</li>
+    </ol>
+    <ol id="urls">
+      <li>https://kodaktor.ru/api/m</li>
+      <li>https://kodaktor.ru/api/MS2</li>
+      <li>https://kodaktor.ru/api/MS3</li>
+    </ol>
+    <script>
+      let values = [...document.querySelectorAll('#values>li')].map(({textContent}) => textContent)
+      let URLS = [...document.querySelectorAll('#urls>li')].map(({textContent}) => textContent)
+      document
+        .querySelector('button')
+        .addEventListener('click',
+        async ({ target: t }) => {
+          let lastResult = null
+          for (let i = 0; i < URLS.length; i++) {
+            const url = `${URLS[i]}/${values[i]}${lastResult ? `/${lastResult}` : ''}`
+            console.log(url)
+            const response = await fetch(url).then(value => value.text())
+            const buffer = document.createElement('div')
+            buffer.innerHTML = response
+            lastResult = buffer.querySelector('span').textContent
+            console.log(lastResult)
+          }
+          t.textContent = `${lastResult}`;
+        }
+      ); 
+      </script>   
+  </body>
+</html>
